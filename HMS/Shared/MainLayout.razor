@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>HMS</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <SfAppBar style=" background-image: linear-gradient(to right, #947FFF, #F875B3);">
+            <AppBarSpacer></AppBarSpacer>
+            <LoginDisplay />
+        </SfAppBar>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+  </div>

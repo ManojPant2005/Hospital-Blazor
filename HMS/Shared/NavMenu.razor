@@ -1,0 +1,115 @@
+﻿﻿<div class="card border-1 shadow-lg" style=" background-image: linear-gradient(to right, #947FFF, #F875B3);">
+    <div class="card border-1 shadow-lg" style=" background-image: linear-gradient(to right, #947FFF, #F875B3);">
+        <div class="card mt-1 border-1 shadow-lg" style=" background-image: linear-gradient(to right, #947FFF, #F875B3);">
+            <div class="card border-1 shadow-lg">
+                <div class="card border-1 shadow-lg">
+                    <div class="card bg-dark border-1 shadow-lg">
+                        <div class="card-header text-white fw-bold fs-5" style=" background-image: linear-gradient(to right, #947FFF, #F875B3);"><h2 style="font-family:Bahnschrift">Medicare</h2></div>
+                        <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+                            <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/">
+                    <i class="oi oi-home"></i>&nbsp;&nbsp;Home
+                </NavLink>
+            </div>
+
+
+        <AuthorizeView Roles="Admin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="dashboard">
+                    <i class="fa fa-pie-chart"></i>&nbsp&nbsp;&nbsp;&nbsp;Dashboard
+                </NavLink>
+            </div>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Admin, SR">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="DoctorManagement">
+                        <i class="fa fa-users"></i>&nbsp&nbsp;&nbsp;&nbsp;&nbsp;Doctors
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="bookAppointment">
+                <span class="oi oi-plus" aria-hidden="true"></span> Book Appointment
+            </NavLink>
+        </div>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="bookings">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Booked Apts
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Admin, SR">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Appointments">
+                    <i class="oi oi-calendar"></i>&nbsp;&nbsp;Appointments
+                </NavLink>
+            </div>
+        </AuthorizeView>
+
+        <AuthorizeView>
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="services">
+                        <span class="oi oi-tablet" aria-hidden="true"></span> Services
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="gallery">
+                <span class="oi oi-book" aria-hidden="true"></span> Gallery
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="contact">
+                <span class="oi oi-person" aria-hidden="true"></span> Contact
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="about">
+                <span class="oi oi-share-boxed" aria-hidden="true"></span> About
+            </NavLink>
+        </div>
+        <AuthorizeView>
+            <Authorized>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="review">
+                        <span class="oi oi-aperture" aria-hidden="true"></span> Client Reviews
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+    </nav>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

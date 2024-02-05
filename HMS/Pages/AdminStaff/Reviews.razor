@@ -1,0 +1,59 @@
+﻿@page "/review"
+@using HMS.Services.Repositories
+
+@inject ReviewService Service
+ @inject NavigationManager NavigationManager
+<hr />
+<form>
+    <div class="container">
+
+            <div class="for-group" style="border:3px solid pink">
+                <label for="Your Name" class="control-label" placeholder="Enter your Name"><b>ENTER NAME</b></label>
+                <input form="name" class="form-control" @bind="@obj.UserName" />
+            </div>
+        </div>
+        <div class="container">
+
+                <div class="for-group" style="border:3px solid pink">
+                    <label for="Your Review" class="control-label" placeholder="Enter your Review"><b>ENTER REVIEW</b></label>
+                    <input form="Review" class="form-control" @bind="@obj.YourReview" />
+                </div>
+            </div>  <br />
+
+        <div class="button-row">
+                <input type="button" class="btn btn-success" @onclick="@CreateNew" value="Save Review" />
+        </div>
+
+        <div class="button-row">
+            <input type="button" class="btn btn-primary" @onclick="@AllReviews" value="All Reviews" />
+        </div>
+        <div class="button-row">
+            <input type="button" class="btn btn-danger" @onclick="AllReviews" value="Cancel" />
+        </div>
+
+</form>
+<style>
+    .container {
+        text-align: center;
+    }
+    .button-row{
+        display:inline;
+    }
+</style>
+@code {
+    Review obj = new Review();
+
+    protected async void CreateNew()
+    {
+        await Service.AddNewReviewDetails(obj);
+        NavigationManager.NavigateTo("reviewsList");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("reviewsList");
+    }
+    protected async void AllReviews()
+    {
+        NavigationManager.NavigateTo("reviewsList");
+    }
+}

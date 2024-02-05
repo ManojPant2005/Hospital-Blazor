@@ -1,0 +1,77 @@
+﻿@page "/reviewsList"
+@using HMS.Services.Repositories
+
+@inject ReviewService ReviewService
+@inject NavigationManager NavigationManager
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <input type="button" class="btn btn-success" style="align-content:space-around" @onclick="@GoHome" value="HOME" />
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<h3 style="font-family:Dubai">REVIEWS..</h3>
+<div class="container">
+
+@if (EmpObj is null)
+{
+    <p><em>Loading..............!!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Review No
+                </th>
+                <th>
+                    USER NAME
+                </th>
+                <th>
+                    REVIEW
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reviewDetail in EmpObj)
+            {
+                <tr>
+                    <td>
+                        @reviewDetail.ReviewId
+                    </td>
+                    <td>
+                        @reviewDetail.UserName
+                    </td>
+                    <td>
+                        @reviewDetail.YourReview
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+</div>
+<style>
+    .container{
+        border: 2px solid green;
+    }
+</style>
+@code {
+    List<Review> EmpObj;
+
+    protected async void GoHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => ReviewService.GetAllReviews());
+    }
+}

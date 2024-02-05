@@ -1,0 +1,114 @@
+﻿@page "/bookings"
+
+@inject IBookingService BookingService
+@inject NavigationManager Navigation
+
+@if (booking is null)
+{
+    <div class="text-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        <table id="booking">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Mobile</th>
+                    <th>Identity</th>
+                    <th>Message</th>
+                    <th>Date&Time</th>
+                    <th>Picture</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (booking != null && booking.Any())
+                {
+                    foreach (Booking dc in booking)
+                    {
+                        <tr>
+                            <td>@dc.Id</td>
+                            <td>@dc.FirstName</td>
+                            <td>@dc.LastName</td>
+                            <td>@dc.Age</td>
+                            <td>@dc.MobileNumber</td>
+                            <td>@dc.NationalIdentityNumber</td>
+                            <td>@dc.Message</td>
+                            <td>@dc.DateTime</td>
+                            <td><img src="@dc.PhotoUrl" height="100" width="100" /></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p>@_actionStatus</p>
+    </div>
+}
+<style>
+    #booking {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        text-align:center;
+    }
+
+        #booking td, #booking th {
+            border: 1px solid blue;
+            padding: 8px;
+        }
+
+        #booking tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #booking tr:hover {
+            background-color: #ddd;
+        }
+
+        #booking th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: black;
+            text-align:center;
+        }
+</style>
+@code {
+    [Parameter]
+    public IEnumerable<Booking> booking { get; set; }
+
+
+    private string _actionStatus = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if ((booking == null || !booking.Any()))
+        {
+            booking = await BookingService.GetAllAsync();
+        }
+    }
+
+    async Task Delete(int id)
+    {
+        if (await BookingService.DeleteAsync(id))
+        {
+            _actionStatus = "Deleted!";
+        }
+        else
+        {
+            _actionStatus = "Something went wrong..!";
+        }
+
+        StateHasChanged();
+    }
+}

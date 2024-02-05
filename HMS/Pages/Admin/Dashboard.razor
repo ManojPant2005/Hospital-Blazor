@@ -1,0 +1,70 @@
+﻿@page "/dashboard"
+
+@inject IUserService service
+@inject IAmenityService AmenityService
+@inject NavigationManager navigationMgr
+
+<SfAppBar style=" background-image: linear-gradient(to right, #947FFF, #F875B3);">
+    <table>
+        <tr>
+            <td>
+                <h2>Medicare</h2>
+            </td>
+            <td>-Manoj</td>
+        </tr>
+    </table>
+    <AppBarSpacer></AppBarSpacer>
+    <input type="search" class="form-control w-25 float-end text-primary rounded-5" @bind="SearchKey" placeholder="Search for something here..." style="visibility:@SearchBarVisibility; margin-right:0.3rem;" />    <div class="card text-center float-end" id="searchIconDiv" style="margin-right:3rem;">
+        <button class="btn btn-none border-0" id="btnSearch" @onclick="SearchIconClicked">
+            <i class="oi oi-magnifying-glass text-center" style="color:#F875B3; margin-left:-0.4rem;"></i>
+        </button>
+    </div>
+
+            <SfButton CssClass="e-inherit" Content="Post Info" OnClick="HandlePostJob"></SfButton>
+</SfAppBar>
+<style>
+    #searchIconDiv {
+        border-radius: 50px;
+        width: 30px;
+        height: 30px;
+    }
+    body{
+        background-color:antiquewhite;
+    }
+    #btnSearch {
+        border-radius: 50px;
+        width: 30px;
+        height: 30px;
+    }
+    *{
+        margin:0;
+        padding:0;
+    }
+</style>
+
+@code {
+    private string SearchKey { get; set; } = string.Empty;
+
+    private static string SearchBarVisibility = "hidden";
+    private void SearchIconClicked()
+    {
+        if (SearchBarVisibility == "hidden")
+        {
+            SearchBarVisibility = "visible";
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(SearchKey) || !string.IsNullOrWhiteSpace(SearchKey))
+        {
+            navigationMgr.NavigateTo($"search/{SearchKey}");
+        }
+
+    }
+
+
+    private void HandlePostJob()
+    {
+        navigationMgr.NavigateTo("post-info");
+    }
+ }
+

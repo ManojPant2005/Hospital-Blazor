@@ -1,0 +1,172 @@
+﻿@page "/bookAppointment"
+
+@inject IBookingService BookingService
+@inject NavigationManager Navigation
+@using System.IO
+@inject IWebHostEnvironment env
+<style>
+    body {
+        font-family: Bahnschrift;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(45deg, #3498db, #e74c3c);
+        animation: backgroundAnimation 10s infinite alternate;
+    }
+
+    form {
+        background-color: thistle;
+        padding: 20px;
+        margin: 25%;
+        margin-top: 5%;
+        border: 3px solid black;
+        border-radius: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 600px;
+        align-content: center;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+        border: 2px solid green;
+        border-radius: 10px;
+    }
+
+        input[type="date"] {
+            padding: 6px;
+        }
+
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<h3 style="font-family:Bahnschrift">Add Appointment</h3>
+
+<EditForm Model="Booking" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col-6">
+            <label for="firstName">First Name:</label>
+            <InputText @bind-Value="@Booking.FirstName" />
+            <ValidationMessage For="(()=>Booking.FirstName)" />
+        </div>
+        <div class="col-6">
+            <label for="lastName">Last Name:</label>
+            <InputText @bind-Value="@Booking.LastName" />
+        </div>
+        <div class="col-6">
+            <label for="age">Age:</label>
+            <InputNumber @bind-Value="@Booking.Age" />
+        </div>
+        <div class="col-6">
+            <label for="mobileNumber">Mobile Number:</label>
+            <InputText @bind-Value="@Booking.MobileNumber" />
+        </div>
+        <div class="col-6">
+            <label for="nationalIdentityNumber">National Identity Number:</label>
+            <InputNumber @bind-Value="@Booking.NationalIdentityNumber" />
+        </div>
+        <div class="col-6">
+            <label for="appointmentDate">Appointment Date:</label>
+            <InputDate @bind-Value="@Booking.DateTime" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row col-6 img-fluid">
+        <label for="Picture">Picture</label>
+        <InputFile OnChange="OnInputFileChange" /> <img src="@Booking.PhotoUrl" style="width:150px; height:100px;" />
+    </div>   <br />
+
+    <div class="row">
+        <label for="Message">Message</label>
+        <InputTextArea @bind-Value="@Booking.Message" style="height:150px;" />
+    </div>
+    <br />
+    <div class="row">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+</EditForm>
+@code {
+    [Parameter]
+    public int BookingId { get; set; }
+
+    public Booking Booking { get; set; } = new();
+
+    string Message = "No file";
+    IReadOnlyList<IBrowserFile> selectedFiles;
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        if (BookingId > 0 && Booking.Id == 0)
+        {
+            Booking = await BookingService.GetAsync(BookingId);
+        }
+    }
+    private async Task OnValidSubmit()
+    {
+        if (BookingId > 0 && Booking.Id > 0)
+        {
+            //Update
+            await BookingService.UpdateAsync(Booking);
+        }
+        else
+        {
+            //Insert
+            Booking = await BookingService.AddAsync(Booking);
+        }
+        await UploadToServer();
+
+        //redirect back to list
+        Navigation.NavigateTo("/bookingConfirmation");
+        
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        selectedFiles = e.GetMultipleFiles();
+        Message = $"{selectedFiles.Count} file(s) selected";
+
+        Booking.PhotoUrl = "Photos/" + e.File.Name;
+
+        this.StateHasChanged();
+    }
+
+    //Can be move to helper
+    private async Task UploadToServer()
+    {
+        if (selectedFiles != null && selectedFiles.Any())
+            foreach (var file in selectedFiles)
+            {
+                Stream stream = file.OpenReadStream();
+                var path = $"{env.WebRootPath}\\Photos\\{file.Name}";
+                FileStream fs = File.Create(path);
+                await stream.CopyToAsync(fs);
+                stream.Close();
+                fs.Close();
+            }
+    }
+}
