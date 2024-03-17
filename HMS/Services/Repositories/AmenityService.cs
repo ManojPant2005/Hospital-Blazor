@@ -16,6 +16,7 @@ namespace HMS.Services.Repositories
             _logger = logger;
         }
 
+
         public async Task<Amenity> AddAsync(Amenity amenity)
         {
             try

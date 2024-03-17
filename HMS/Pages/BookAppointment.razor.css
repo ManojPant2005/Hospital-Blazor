@@ -1,0 +1,57 @@
+﻿
+body {
+    font-family: Bahnschrift;
+    align-items: center;
+    justify-content: center;
+    background: rgb(58,180,164);
+}
+
+
+
+form {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(251,0,0,0) 0%, rgba(85,64,255,1) 100%, rgba(0,212,255,1) 100%);
+    padding: 20px;
+    margin: 25%;
+    margin-top: 5%;
+    border: 3px solid black;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    align-content: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 2px solid green;
+    border-radius: 10px;
+}
+
+    input[type="date"] {
+        padding: 6px;
+    }
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+    button:hover {
+        background-color: #45a049;
+    }
+
